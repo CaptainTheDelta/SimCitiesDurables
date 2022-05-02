@@ -51,10 +51,8 @@ class Game:
     def calcul_note_dimensionnement(self, population=100000):
         note = 0
         ratios = self.calcul_ratios_note_dimensionnement(population)
-        pprint(ratios)
 
         for p in self.points:
-            print(self.points[p])
             for r in self.points[p]:
                 if abs(ratios[r]-1) <= 0.1:
                     note += p
