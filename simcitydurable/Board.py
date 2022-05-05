@@ -116,7 +116,7 @@ class Board:
         pass
 
     def random_blocs(self):
-        blocs = Bloc.__subclasses__()
+        blocs = Bloc.__subclasses__()[4:]
         for (x,y),bloc in self:
-            if isinstance(bloc, Vide):
+            if random.random() > 0.2 and isinstance(bloc, Vide):
                 self.board[x][y] = random.choice(blocs)()
