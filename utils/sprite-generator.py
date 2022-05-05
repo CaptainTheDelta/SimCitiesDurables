@@ -4,47 +4,17 @@ import openpyxl as xl
 import logging
 
 logging.basicConfig(level=logging.DEBUG)
-#============================ excel configuration =============================
+
+output = r"/run/media/damien/SanDisk 32Go USB/PJT/tmp/simcitydurable/Bloc.py"
 
 excel = r"/run/media/damien/SanDisk 32Go USB/PJT/2 - Jumeau Numérique/SimCities Numérique Excel-Python/plateau_excelV3.xlsx"
 plateau_xl = xl.load_workbook(excel, read_only=True, data_only=True)
 donnees = plateau_xl["Données"]
 
-xl_data = {
-    "Production d'énergie": [6, 15],
-    "Habitation": [21, 30],
-    "Santé": [36, 39],
-    "Consommation": [45, 48],
-    "Eau": [54, 59],
-    "Education": [65, 66],
-    "Transports": [72, 77],
-    "Industrie": [83, 98],
-    "Alimentation": [104, 110],
-}
-
-name_exceptions = [
-    ("groupes sc", "groupe scolaire"),
-    ("station d'ép", "station épuration"),
-    ("station de production d'e", "station eau potable"),
-    ("groupement de ", "commerce de proximité"),
-]
-
-variant_methods = {
-    "Production d'énergie": lambda v: v.split()[0],
-    "Habitation": lambda v: v.split()[-1],
-    "Santé": lambda v: v.split()[0],
-    "Consommation": lambda v: v.split()[0],
-    "Eau": lambda v: v.split()[0],
-    "Education": lambda v: v,
-    "Transports": lambda v: v,
-    "Industrie": lambda v: v if v != "nouvelles technologies" else "nouvelle technologie",
-    "Alimentation": lambda v: v.split()[0],
-}
-
 #============================ Image configuration =============================
 
 n = 69
-length = 500
+length = 100
 output = "test.png"
 draw_border = True
 
@@ -81,22 +51,59 @@ def wrap_text(text, font_path, size):
     return '\n'.join(lines).strip(),font
 
 
-im = Image.new("RGB", (length*n,length*n), "white")
-d = ImageDraw.Draw(im)
+xl_data = {
+    "Production d'énergie": [6, 15],
+    "Habitation": [21, 30],
+    "Santé": [36, 39],
+    "Consommation": [45, 48],
+    "Eau": [54, 59],
+    "Education": [65, 66],
+    "Transports": [72, 77],
+    "Industrie": [83, 98],
+    "Alimentation": [104, 110],
+}
 
-if draw_border:
-    for i in range(1,n):
-        d.line((0,i*length-1,n*length,i*length-1), fill="grey")
-        d.line((i*length-1,0,i*length-1,n*length), fill="grey")
+
+def replace_multiple(text, replacements):
+    for f, r in replacements:
+        text = text.replace(f, r)
+    return text
 
 
-k = 0
+name_exceptions = [
+    ("groupes sc", "groupe scolaire"),
+    ("station d'ép", "station épuration"),
+    ("station de production d'e", "station eau potable"),
+]
+
+variant_methods = {
+    "Production d'énergie": lambda v: v.split()[0],
+    "Habitation": lambda v: v.split()[-1],
+    "Santé": lambda v: v.split()[0],
+    "Consommation": lambda v: v.split()[0],
+    "Eau": lambda v: v.split()[0],
+    "Education": lambda v: v,
+    "Transports": lambda v: v,
+    "Industrie": lambda v: v if v != "nouvelles technologies" else "nouvelle technologie",
+    "Alimentation": lambda v: v.split()[0],
+}
+
+# rivière :
+Image.new("RGB", (length,length), "blue").save("utils/img/Riviere.png")
+# mairie :
+Image.new("RGB", (length,length), "red").save("utils/img/Mairie.png")
+# parc :
+Image.new("RGB", (length,length), "green").save("utils/img/Parc.png")
+# parc :
+Image.new("RGB", (length,length), "white").save("utils/img/Vide.png")
+
+
+
 for cat, (start, end) in xl_data.items():
-    logging.info(f"Génération des blocs de catégorie {cat}.")
+    logging.info(f"Génération des images de catégorie {cat}.")
     for l in range(start, end+1):
-        y,x = divmod(k, n)
-        k += 1
-
+        im = Image.new("RGB", (length,length), "white")
+        d = ImageDraw.Draw(im)
         name = donnees[f"B{l}"].value
         variant = ""
 
@@ -114,6 +121,15 @@ for cat, (start, end) in xl_data.items():
 
         if name.endswith('x') or name.endswith('s'):
             name = name[:-1]
+        
+        n2 = name
+
+        if variant != "":
+            n2 += ' ' + variant_methods[cat](variant)
+
+        n2 = replace_multiple(
+            n2, [('é', 'e'), ('ô', 'o'), (" de ", " "), ("/", " "), ("d'", ' ')])
+        n2 = n2.title().replace(" ", "")
 
         logging.debug(f"Bloc {name}")
         name = name[0].upper() + name[1:]
@@ -124,11 +140,9 @@ for cat, (start, end) in xl_data.items():
         n_line = len(name.split('\n'))
         variant,regular_font = wrap_text(variant, regular, s2)
 
-        d.text((px+x*length,py+y*length), name, font=bold_font, fill="black")
+        d.text((px,py), name, font=bold_font, fill="black")
         height = bold_font.getsize_multiline(name)[1]
         
-        d.text((px+x*length,py+height+y*length+delta), variant, font=regular_font, fill="grey")
+        d.text((px,py+height+delta), variant, font=regular_font, fill="grey")
 
-im.save(output)
-
-# https://stackoverflow.com/questions/16579674/using-spritesheets-in-tkinter
+        im.save("utils/img/"+n2+".png")
