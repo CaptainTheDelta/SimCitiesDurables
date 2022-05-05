@@ -58,8 +58,6 @@ for bloc in Bloc.__subclasses__():
 # plateau
 
 board = ttk.Frame(app, width=1000, height=1000)
-board['borderwidth'] = 4
-board['relief'] = 'sunken'
 board.grid(column=1,row=0)
 
 
@@ -86,12 +84,10 @@ lib_frame = ttk.Frame(app)
 lib_frame.grid(column=0, row=0, sticky=(N, W, S),rowspan=2)
 lib_frame.rowconfigure(index=0, weight=1)
 
-lib_canvas = Canvas(lib_frame, background="yellow")
+lib_canvas = Canvas(lib_frame)
 scrollbar = ttk.Scrollbar(lib_frame, orient="vertical", command=lib_canvas.yview)
 
 lib = ttk.Frame(lib_canvas)
-lib['borderwidth'] = 4
-lib['relief'] = 'sunken'
 lib.grid(column=0, row=0)
 
 lib.bind(
@@ -117,6 +113,24 @@ for bloc in Bloc.__subclasses__():
 
 lib_canvas.grid(column=0, row=0, sticky=(N, W, S))
 scrollbar.grid(column=1, row=0, sticky=(N, E, S))
+
+def _bound_to_mousewheel(event):
+    lib_frame.bind_all("<Button-4>", _on_mousewheel)
+    lib_frame.bind_all("<Button-5>", _on_mousewheel)
+
+def _unbound_to_mousewheel(event):
+    lib_frame.unbind_all("<Button-4>")
+    lib_frame.unbind_all("<Button-5>")
+
+from pprint import pprint
+
+def _on_mousewheel(event):
+    i = (event.num-4)*2-1
+    lib_canvas.yview_scroll(i, "units")
+
+
+lib_frame.bind('<Enter>', _bound_to_mousewheel)
+lib_frame.bind('<Leave>', _unbound_to_mousewheel)
 
 
 # Zone d'affichage des scores
