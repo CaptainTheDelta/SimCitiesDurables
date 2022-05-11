@@ -30,8 +30,8 @@ class Board:
                 cells.extend([
                     (x-d, y+i),
                     (x+i, y+d),
-                    (x+d, y+1+i),
-                    (x+1+i, y-d)
+                    (x+d, y-i),
+                    (x-i, y-d)
                 ])
 
             return cells

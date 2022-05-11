@@ -69,25 +69,25 @@ class Bloc:
         return self.data[key]
 
 
-class Vide(Bloc):
+class Vide(Bloc, Indispensable):
     data = {}
     def __init__(self):
         super().__init__("Vide", "Indispensable")
 
 
-class Riviere(Bloc):
+class Riviere(Bloc, Indispensable):
     data = {}
     def __init__(self):
         super().__init__("Rivière", "Indispensable")
 
 
-class Mairie(Bloc):
+class Mairie(Bloc, Indispensable):
     data = {}
     def __init__(self):
         super().__init__("Mairie", "Indispensable")
 
 
-class Parc(Bloc):
+class Parc(Bloc, Indispensable):
     data = {}
     def __init__(self):
         super().__init__("Parc", "Indispensable")
