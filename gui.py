@@ -117,10 +117,15 @@ scrollbar.grid(column=1, row=0, sticky=(N, E, S))
 def _bound_to_mousewheel(event):
     lib_frame.bind_all("<Button-4>", _on_mousewheel)
     lib_frame.bind_all("<Button-5>", _on_mousewheel)
+    lib_frame.bind_all("<Motion>", _on_motion)
 
 def _unbound_to_mousewheel(event):
     lib_frame.unbind_all("<Button-4>")
     lib_frame.unbind_all("<Button-5>")
+    lib_frame.unbind_all("<Motion>")
+
+def _on_motion(event):
+    print(event.x, event.y)
 
 from pprint import pprint
 
@@ -137,5 +142,6 @@ lib_frame.bind('<Leave>', _unbound_to_mousewheel)
 
 score = ttk.Label(app, text="Score")
 score.grid(column=1,row=1, sticky=(N, W, E, S))
+
 
 root.mainloop()
