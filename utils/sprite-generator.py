@@ -63,6 +63,18 @@ xl_data = {
     "Alimentation": [104, 110],
 }
 
+colors = {
+    "Production d'énergie": "LightGoldenRodYellow",
+    "Habitation": "LightGreen",
+    "Santé": "LightPink",
+    "Consommation": "LightSalmon",
+    "Eau": "LightBlue",
+    "Education": "LightCyan",
+    "Transports": "LightGrey",
+    "Industrie": "LightSteelBlue",
+    "Alimentation": "gold",
+}
+
 
 def replace_multiple(text, replacements):
     for f, r in replacements:
@@ -102,7 +114,7 @@ Image.new("RGB", (length,length), "white").save("utils/img/Vide.png")
 for cat, (start, end) in xl_data.items():
     logging.info(f"Génération des images de catégorie {cat}.")
     for l in range(start, end+1):
-        im = Image.new("RGB", (length,length), "white")
+        im = Image.new("RGB", (length,length), colors[cat])
         d = ImageDraw.Draw(im)
         name = donnees[f"B{l}"].value
         variant = ""
