@@ -17,8 +17,8 @@ n = 69
 length = 100
 output = "test.png"
 draw_border = True
-
-fonts_folder = "/usr/share/fonts/liberation-sans"
+/usr/share/fonts/liberation-sans
+fonts_folder = "utils/fonts"
 regular = os.path.join(fonts_folder, "LiberationSans-Italic.ttf")
 bold = os.path.join(fonts_folder, "LiberationSans-Bold.ttf")
 
