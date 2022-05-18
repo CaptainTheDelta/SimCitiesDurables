@@ -2,7 +2,9 @@
 
 ## Pour l'exécution
 
-1. changer le chemin vers l'excel aux endroits suivants :
+### Emplacement du fichier excel
+
+Commencez par changer le chemin vers l'excel aux endroits suivants :
 
 
 *utils/sprite-generator.py* ligne 8
@@ -25,13 +27,24 @@ from .Categorie import *
 excel = r"/run/media/damien/SanDisk 32Go USB/PJT/2 - Jumeau Numérique/SimCities Numérique Excel-Python/plateau_excelV3.xlsx"
 ```
 
-2. générer les images des cases avec `python utils/sprite-generator.py`
+### Génération des images des cases
 
-3. exécuter `python gui.py`
+```
+> python utils/sprite-generator.py
+```
+
+### Lancement du jeu
+
+```
+> python gui.pyy
+```
+
 
 ## Pour la regénération du fichier *simcitydurable/Bloc.py*
 
-1. changer le chemin vers l'excel aux endroits suivants :
+### Emplacement du fichier excel
+
+Changez le chemin vers l'excel aux endroits suivants :
 
 
 *utils/class-generator.py* ligne 8
@@ -52,4 +65,10 @@ text = """import openpyxl as xl
 from .Categorie import *
 
 excel = r"/run/media/damien/SanDisk 32Go USB/PJT/2 - Jumeau Numérique/SimCities Numérique Excel-Python/plateau_excelV3.xlsx"
+```
+
+### Génération du fichier
+
+```
+> python utils/class-generator.py
 ```
