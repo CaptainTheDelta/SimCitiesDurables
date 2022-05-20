@@ -24,8 +24,8 @@ class Cell(Canvas):
 
     def on_start(self, event):
         self.icone = Canvas(app, width=size, height=size, background=self.color)
-        self.x = root.winfo_rootx() + event.x
-        self.y = root.winfo_rooty() + event.y
+        self.x = app.winfo_rootx() + event.x
+        self.y = app.winfo_rooty() + event.y
         self.on_drag(event)
         
         self.row = self.grid_info()['row'] 
@@ -39,8 +39,8 @@ class Cell(Canvas):
 
 
     def on_drag(self, event):
-        xd = root.winfo_pointerx() - self.x
-        yd = root.winfo_pointery() - self.y
+        xd = app.winfo_pointerx() - self.x
+        yd = app.winfo_pointery() - self.y
         self.icone.place(x=xd,y=yd)
 
     def on_drop(self, event):
@@ -52,7 +52,7 @@ class Cell(Canvas):
             row_target = target.grid_info()['row'] 
             column_target = target.grid_info()['column']
 
-            c = Cell(self.color, board, self.drag, self.drop, width=size,height=size)
+            c = Cell(self.color, board, True, True, width=size,height=size)
             c.grid(row=row_target, column=column_target)
         else:
             self.grid(row=self.row, column=self.column)
@@ -144,9 +144,6 @@ def _on_mousewheel(event):
 
 lib_frame.bind('<Enter>', _bound_to_mousewheel)
 lib_frame.bind('<Leave>', _unbound_to_mousewheel)
-
-
-
 
 
 root.mainloop()
