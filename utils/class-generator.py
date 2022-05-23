@@ -5,7 +5,7 @@ logging.basicConfig(level=logging.DEBUG)
 
 output = r"simcitydurable/Bloc.py"
 
-excel = r"/run/media/damien/SanDisk 32Go USB/PJT/2 - Jumeau Numérique/SimCities Numérique Excel-Python/plateau_excelV3.xlsx"
+excel = r"utils/res/plateau_excelV3.xlsx"
 plateau_xl = xl.load_workbook(excel, read_only=True, data_only=True)
 donnees = plateau_xl["Données"]
 
@@ -75,7 +75,7 @@ variant_methods = {
 text = """import openpyxl as xl
 from .Categorie import *
 
-excel = r"/run/media/damien/SanDisk 32Go USB/PJT/2 - Jumeau Numérique/SimCities Numérique Excel-Python/plateau_excelV3.xlsx"
+excel = r"utils/res/plateau_excelV3.xlsx"
 plateau_xl = xl.load_workbook(excel, read_only=True, data_only=True)
 donnees = plateau_xl["Données"]
 pollution = plateau_xl["Pollution"]

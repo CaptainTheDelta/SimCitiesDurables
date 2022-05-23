@@ -1,71 +1,28 @@
 # SimCitiesDurables
 
-## Pour l'exécution
+## Fichier excel
 
-### Emplacement du fichier excel
-
-Commencez par changer le chemin vers l'excel aux endroits suivants :
+Placez le fichier *plateau_excelV3.xlsx* dans `utils/res/`.
 
 
-*utils/sprite-generator.py* ligne 8
-```python
-from PIL import Image, ImageDraw, ImageFont
-import os
-import openpyxl as xl
-import logging
+## Exécution des programmes
 
-logging.basicConfig(level=logging.DEBUG)
-
-excel = r"/run/media/damien/SanDisk 32Go USB/PJT/2 - Jumeau Numérique/SimCities Numérique Excel-Python/plateau_excelV3.xlsx"
-```
-
-*simcitydurable/Bloc.y*, ligne 4
-```python
-import openpyxl as xl
-from .Categorie import *
-
-excel = r"/run/media/damien/SanDisk 32Go USB/PJT/2 - Jumeau Numérique/SimCities Numérique Excel-Python/plateau_excelV3.xlsx"
-```
+Il est nécessaire de se placer à la racine du projet pour une exécution correcte des programmes.
 
 ### Génération des images des cases
-
 ```
 > python utils/sprite-generator.py
 ```
 
 ### Lancement du jeu
+Il est nécessaire de générer les images avant de lancer le jeu.
 
 ```
-> python gui.pyy
+> python gui.py
 ```
 
 
 ## Pour la regénération du fichier *simcitydurable/Bloc.py*
-
-### Emplacement du fichier excel
-
-Changez le chemin vers l'excel aux endroits suivants :
-
-
-*utils/class-generator.py* ligne 8
-```python
-import openpyxl as xl
-import logging
-
-logging.basicConfig(level=logging.DEBUG)
-
-output = r"/run/media/damien/SanDisk 32Go USB/PJT/tmp/simcitydurable/Bloc.py"
-
-excel = r"/run/media/damien/SanDisk 32Go USB/PJT/2 - Jumeau Numérique/SimCities Numérique Excel-Python/plateau_excelV3.xlsx"
-```
-
-et ligne 78
-```python
-text = """import openpyxl as xl
-from .Categorie import *
-
-excel = r"/run/media/damien/SanDisk 32Go USB/PJT/2 - Jumeau Numérique/SimCities Numérique Excel-Python/plateau_excelV3.xlsx"
-```
 
 ### Génération du fichier
 
