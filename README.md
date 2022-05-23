@@ -1,5 +1,13 @@
 # SimCitiesDurables
 
+## Dépendances
+
+Installez les paquets nécessaires :
+```
+> pip install -r requierements.txt
+```
+
+
 ## Fichier excel
 
 Placez le fichier *plateau_excelV3.xlsx* dans `utils/res/`.
