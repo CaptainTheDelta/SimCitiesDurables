@@ -1,4 +1,3 @@
-from .Bloc import *
 from .Board import *
 
 from pprint import pprint
@@ -29,7 +28,7 @@ class Game:
         
         for _, bloc in self.board:
             for k in DATA_KEYS:
-                total[k] += bloc.get(k)
+                total[k] += blocs[bloc][k]
         return {
             "énergétique": calc_ratio(total["production électricité"], total["consommation énergie"]),
             "nourriture": calc_ratio(total["production nourriture"], total["consommation nourriture"]),
@@ -70,10 +69,10 @@ class Game:
         for c in CATEGORIES:
             notes[c] = [0, 0]
         for _, bloc in self.board:
-            c = bloc.categorie
-            notes[c][0] += bloc.get("émissions CO2") * \
-                bloc.get("coefficient pollution")
-            notes[c][1] += bloc.get("émissions CO2")
+            c = blocs[bloc]["catégorie"]
+            notes[c][0] += blocs[bloc]["émissions CO2"] * \
+                blocs[bloc]["coefficient pollution"]
+            notes[c][1] += blocs[bloc]["émissions CO2"]
         for c in CATEGORIES:
             if notes[c][1] == 0:
                 notes[c] = 0
@@ -84,7 +83,7 @@ class Game:
     def calcul_note_pollution(self):
         return sum(self.calcul_note_pollution_categories().values())
 
-    def note_disposition(self):
+    def calcul_note_disposition(self):
         buildings = {}
         ratios = {}
         points = {}
@@ -97,17 +96,22 @@ class Game:
             buildings[c] = []
             points["Eclatement "+c] = 0
         
-        for coords,_ in self.board:
-            buildings[c].append(coords)
+        for coords,b in self.board:
+            c = blocs[b]["catégorie"]
+            if c in categories_eclatement:
+                buildings[c].append(coords)
         
         for c in categories_eclatement:
             l = len(buildings[c])
             distance = 0
+            print(buildings[c])
             while len(buildings[c]) > 0:
                 bloc1 = buildings[c].pop()
                 for bloc2 in buildings[c]:
                     distance += sqrt( (bloc2[0]-bloc1[0])**2 + (bloc2[1]-bloc1[1])**2)
-            ratios[c] = distance / DISTANCE_DE_REFERENCE[l]
+            print(l,DISTANCE_DE_REFERENCE)
+
+            ratios[c] = calc_ratio(distance, DISTANCE_DE_REFERENCE[l])
 
             if ratios[c] > 1:
                 points["Eclatement "+c] = 1 # TODO ou /!\ 0.5 /!\

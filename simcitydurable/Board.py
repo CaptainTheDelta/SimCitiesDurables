@@ -1,7 +1,40 @@
 import random
-from .Bloc import *
-from .Categorie import *
+import json
 
+blocs = {}
+
+with open("simcitydurable/data.json", 'r') as file:
+    blocs = json.load(file)
+
+DATA_KEYS = [
+    "production électricité",
+    "production nourriture",
+    "production eau",
+    "production déchets industriels",
+    "production déchets ménagers",
+    "consommation énergie",
+    "consommation nourriture",
+    "consommation eau",
+    "consommation déchets",
+    "traitement eau",
+    "traitement déchets industriels",
+    "traitement déchets ménagers",
+    "capacité hébergement",
+    "capacité formation",
+    "capacité emploi",
+    "capacité transport",
+    "santé hôpitaux",
+    "santé EHPAD",
+    "capacité commerces",
+    "émissions CO2",
+]
+
+CATEGORIES = []
+
+for b in blocs:
+    c = blocs[b]["catégorie"]
+    if c not in CATEGORIES:
+        CATEGORIES.append(c)
 
 class Board:
     def __init__(self, disp=[], rand=False):
@@ -9,7 +42,7 @@ class Board:
         self.N = 10
 
         if disp == []:
-            self.board = [[Vide() for i in range(self.N)] for j in range(self.N)]
+            self.board = [["Vide" for i in range(self.N)] for j in range(self.N)]
             self.create_river(15)
             self.add_city_hall()
             self.add_parks(24)
@@ -48,21 +81,6 @@ class Board:
                 ])
 
             return cells
-
-        def print_array(array):
-            n = len(array[0])
-            s = '+' + '--'*n + '+\n'
-            for row in array:
-                s += '|' + \
-                    ''.join(
-                        ['  ' if r == 0 else f"{int(r):2d}" for r in row]) + '|\n'
-            s += '+' + '--'*n + '+'
-
-        def print_cells(cells):
-            board = [[0 for i in range(self.N)] for j in range(self.N)]
-            for c in cells:
-                board[c] = 1
-            print_array(board)
 
         def in_board(cell): 
             return 0 <= cell[0] and cell[0] < self.N and 0 <= cell[1] and cell[1] < self.N
@@ -107,7 +125,7 @@ class Board:
                     river_counter[cx][cy] += 1
 
         for (x,y), cells in river:
-            self.board[x][y] = Riviere()
+            self.board[x][y] = "Riviere"
 
     def add_city_hall(self):
         pass
@@ -116,7 +134,7 @@ class Board:
         pass
 
     def random_blocs(self):
-        blocs = Bloc.__subclasses__()
+        blocs_names = list(blocs.keys())
         for (x,y),bloc in self:
-            if isinstance(bloc, Vide):
-                self.board[x][y] = random.choice(blocs)()
+            if bloc == "Vide":
+                self.board[x][y] = random.choice(blocs_names)
