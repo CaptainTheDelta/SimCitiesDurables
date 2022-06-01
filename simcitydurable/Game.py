@@ -9,6 +9,12 @@ DISTANCE_DE_REFERENCE = [
     0, 0, 5, 15, 31, 50, 65, 95, 135, 185, 250, 330, 420, 550, 680, 800, 1000
 ]
 
+def calc_ratio(v1,v2):
+    """Calcule le ratio de v1 par v2 en renvoyant 0 si v2 est nul."""
+    if v2 == 0:
+        return 0
+    return v1/v2 
+
 class Game:
     def __init__(self):
         self.board = Board(rand=True)
@@ -25,20 +31,20 @@ class Game:
             for k in DATA_KEYS:
                 total[k] += bloc.get(k)
         return {
-            "énergétique": total["production électricité"]/total["consommation énergie"],
-            "nourriture": total["production nourriture"]/total["consommation nourriture"],
-            "eau production": total["production eau"]/total["consommation eau"],
-            "eau traitement": total["traitement eau"]/total["consommation eau"],
-            "hébergement": total["capacité hébergement"]/population,
-            "formation": total["capacité formation"]/(0.235*total["capacité hébergement"]),
-            "santé EHPAD": total["santé EHPAD"]/(0.01*total["capacité hébergement"]),
-            "santé hôpitaux": total["santé hôpitaux"]/(0.005*total["capacité hébergement"]),
-            "déchets ménagers": total["traitement déchets ménagers"]/total["production déchets ménagers"],
-            "déchets industriels": total["traitement déchets industriels"]/total["production déchets industriels"],
-            "déchets réutilisés": total["consommation déchets"]/(0.2*(total["production déchets industriels"]+total["production déchets ménagers"])),
-            "emploi": total["capacité emploi"]/(0.443*total["capacité hébergement"]),
-            "transport": total["capacité transport"]/(0.5*total["capacité hébergement"]),
-            "commerces": total["capacité hébergement"]/total["capacité commerces"]
+            "énergétique": calc_ratio(total["production électricité"], total["consommation énergie"]),
+            "nourriture": calc_ratio(total["production nourriture"], total["consommation nourriture"]),
+            "eau production": calc_ratio(total["production eau"], total["consommation eau"]),
+            "eau traitement": calc_ratio(total["traitement eau"], total["consommation eau"]),
+            "hébergement": calc_ratio(total["capacité hébergement"], population),
+            "formation": calc_ratio(total["capacité formation"], (0.235*total["capacité hébergement"])),
+            "santé EHPAD": calc_ratio(total["santé EHPAD"], (0.01*total["capacité hébergement"])),
+            "santé hôpitaux": calc_ratio(total["santé hôpitaux"], (0.005*total["capacité hébergement"])),
+            "déchets ménagers": calc_ratio(total["traitement déchets ménagers"], total["production déchets ménagers"]),
+            "déchets industriels": calc_ratio(total["traitement déchets industriels"], total["production déchets industriels"]),
+            "déchets réutilisés": calc_ratio(total["consommation déchets"], (0.2*(total["production déchets industriels"]+total["production déchets ménagers"]))),
+            "emploi": calc_ratio(total["capacité emploi"], (0.443*total["capacité hébergement"])),
+            "transport": calc_ratio(total["capacité transport"], (0.5*total["capacité hébergement"])),
+            "commerces": calc_ratio(total["capacité hébergement"], total["capacité commerces"])
         }
 
     points = {
