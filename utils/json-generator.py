@@ -172,5 +172,5 @@ for cat, (start, end) in xl_data.items():
 
         blocs[name] = data
 
-with open(output, 'w') as out:
+with open(output, 'w', encoding='utf-8') as out:
     json.dump(blocs,out, indent=4, ensure_ascii=False)
