@@ -1,10 +1,9 @@
 from tkinter import *
 from tkinter import ttk
 from PIL import ImageTk, Image
-from simcitydurable.Bloc import *
 from simcitydurable.Game import *
 import os
-
+()
 
 img_folder = os.path.join(os.getcwd(),"utils/img")
 
@@ -70,7 +69,7 @@ class SimCityDurableApp:
     def __init__(self, root):
         # configuration de la fenêtre
         root.title("SimCityDurable")
-        root.attributes('-zoomed', True)
+        #root.attributes('-zoomed', True)
         root.columnconfigure(0, weight=1)
         root.rowconfigure(0, weight=1)
 
@@ -110,10 +109,9 @@ class SimCityDurableApp:
         self.board.grid(column=1,row=0)
 
         for (x,y),cell in self.g.board:
-            bloc = cell.__class__.__name__
-            drag = not isinstance(cell, Indispensable)
-            drop = drag or isinstance(cell, Vide)
-            c = Cell(bloc,self.board,drag, drop, self.app, self.board)
+            drag = blocs[cell]["catégorie"] != "Indispensable"
+            drop = drag or cell == "Vide"
+            c = Cell(cell,self.board,drag, drop, self.app, self.board)
             c.grid(row=x,column=y)
 
 
@@ -141,8 +139,9 @@ class SimCityDurableApp:
         self.lib_canvas.configure(yscrollcommand=scrollbar.set)
 
         k = 0
-        for bloc in Bloc.__subclasses__()[4:]:
-            bloc = bloc.__name__
+        blocs_list = list(blocs.keys())
+
+        for bloc in blocs_list[4:]:
             if bloc in img:
                 c = Cell(bloc,self.lib,True, False, self.app, self.board)
                 row,column = divmod(k, 3)
@@ -156,8 +155,44 @@ class SimCityDurableApp:
         self.lib_frame.bind('<Leave>', self._unbound_to_mousewheel)
 
         # Zone d'affichage des scores
-        score = ttk.Label(self.app, text="Score")
-        score.grid(column=1,row=1, sticky=(N, W, E, S))
+        self.scores_frame = ttk.Frame(self.app)
+        self.scores_title = ttk.Label(self.scores_frame, text="Scores")
+        self.scores_title.grid(column=0, row=0, sticky=(N, W, E), columnspan=2)
+        
+        self.score_dimensionnement_label = ttk.Label(self.scores_frame, text="Score dimensionnement")
+        self.score_pollution_label = ttk.Label(self.scores_frame, text="Score pollution")
+        self.score_disposition_label = ttk.Label(self.scores_frame, text="Score disposition")
+        self.score_final_label = ttk.Label(self.scores_frame, text="Score final")
+        self.score_dimensionnement_label.grid(row=1, column=0, sticky=E)
+        self.score_pollution_label.grid(row=2, column=0, sticky=E)
+        self.score_disposition_label.grid(row=3, column=0, sticky=E)
+        self.score_final_label.grid(row=2, column=3, sticky=E)
+
+        self.score_dimensionnement = StringVar(value='0')
+        self.score_pollution = StringVar(value='0')
+        self.score_disposition = StringVar(value='0')
+        self.score_final = StringVar(value='0')
+
+        self.score_dimensionnement_display = ttk.Label(self.scores_frame, textvariable=self.score_dimensionnement, width=4)
+        self.score_pollution_display = ttk.Label(self.scores_frame, textvariable=self.score_pollution, width=4)
+        self.score_disposition_display = ttk.Label(self.scores_frame, textvariable=self.score_disposition, width=4)
+        self.score_final_display = ttk.Label(self.scores_frame, textvariable=self.score_final, width=4)
+        self.score_dimensionnement_display.grid(row=1, column=1, sticky=E)
+        self.score_pollution_display.grid(row=2, column=1, sticky=E)
+        self.score_disposition_display.grid(row=3, column=1, sticky=E)
+        self.score_final_display.grid(row=2, column=4, sticky=E)
+
+        self.score_sur_20_1 = ttk.Label(self.scores_frame, text="/20")
+        self.score_sur_20_2 = ttk.Label(self.scores_frame, text="/20")
+        self.score_sur_20_3 = ttk.Label(self.scores_frame, text="/20")
+        self.score_sur_20_4 = ttk.Label(self.scores_frame, text="/20")
+        self.score_sur_20_1.grid(row=1, column=2, sticky=W)
+        self.score_sur_20_2.grid(row=2, column=2, sticky=W)
+        self.score_sur_20_3.grid(row=3, column=2, sticky=W)
+        self.score_sur_20_4.grid(row=2, column=5, sticky=W)
+
+
+        self.scores_frame.grid(row=1, column=1, sticky=(E,S,W))
 
 
     def _bound_to_mousewheel(self, event):
@@ -187,8 +222,7 @@ if __name__ == "__main__":
 
 # chargement des images des blocs
     img = {}
-    for bloc in Bloc.__subclasses__():
-        bloc = bloc.__name__
+    for bloc in blocs.keys():
         path = os.path.join(img_folder, bloc+".png")
         try:
             i = ImageTk.PhotoImage(Image.open(path))
