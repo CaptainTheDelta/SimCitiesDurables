@@ -3,7 +3,7 @@ import json
 
 blocs = {}
 
-with open("simcitydurable/data.json", 'r') as file:
+with open("simcitydurable/data.json", 'r', encoding="utf-8") as file:
     blocs = json.load(file)
 
 DATA_KEYS = [
@@ -128,13 +128,27 @@ class Board:
             self.board[x][y] = "Riviere"
 
     def add_city_hall(self):
-        pass
+        liste = []
+        for (x,y),bloc in self:
+            if bloc == "Vide":
+                liste.append((x,y))
+        x,y = random.choice(liste)
+        self.board[x][y] = "Mairie"
 
     def add_parks(self, n_parks):
-        pass
+        liste = []
+        for (x,y),bloc in self:
+            if bloc == "Vide":
+                liste.append((x,y))
+    
+        for p in range(n_parks):
+            x,y = random.choice(liste)
+            i = liste.index((x,y))
+            self.board[x][y] = "Parc"
+            liste.pop(i)
 
     def random_blocs(self):
-        blocs_names = list(blocs.keys())
+        blocs_names = list(blocs.keys())[4:]
         for (x,y),bloc in self:
             if bloc == "Vide":
                 self.board[x][y] = random.choice(blocs_names)
