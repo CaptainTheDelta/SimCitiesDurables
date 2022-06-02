@@ -138,13 +138,19 @@ class SimCityDurableApp:
         self.lib_canvas.create_window((0, 0), window=self.lib, anchor="nw")
         self.lib_canvas.configure(yscrollcommand=scrollbar.set)
 
+        largeur = 3
         k = 0
         blocs_list = list(blocs.keys())
+        prev_cat = ""
 
         for bloc in blocs_list[4:]:
             if bloc in img:
+                if blocs[bloc]["catégorie"] != prev_cat:
+                    prev_cat = blocs[bloc]["catégorie"]
+                    ttk.Label(self.lib, text=prev_cat).grid(row=k//largeur+1,column=0,columnspan=largeur)
+                    k = (k // largeur + 2) * largeur
                 c = Cell(bloc,self.lib,True, False, self.app, self.board)
-                row,column = divmod(k, 3)
+                row,column = divmod(k, largeur)
                 c.grid(row=row,column=column)
                 k += 1
 
