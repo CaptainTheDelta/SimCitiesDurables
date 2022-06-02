@@ -63,8 +63,8 @@ class Board:
                 cells.extend([
                     (x-d, y+i),
                     (x+i, y+d),
-                    (x+d, y+1+i),
-                    (x+1+i, y-d)
+                    (x+d, y-i),
+                    (x-i, y-d)
                 ])
 
             return cells
@@ -138,3 +138,4 @@ class Board:
         for (x,y),bloc in self:
             if bloc == "Vide":
                 self.board[x][y] = random.choice(blocs_names)
+

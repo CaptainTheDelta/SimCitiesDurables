@@ -3,9 +3,9 @@ import logging
 
 logging.basicConfig(level=logging.DEBUG)
 
-output = r"/run/media/damien/SanDisk 32Go USB/PJT/tmp/simcitydurable/Bloc.py"
+output = r"simcitydurable/Bloc.py"
 
-excel = r"/run/media/damien/SanDisk 32Go USB/PJT/2 - Jumeau Numérique/SimCities Numérique Excel-Python/plateau_excelV3.xlsx"
+excel = r"utils/res/plateau_excelV3.xlsx"
 plateau_xl = xl.load_workbook(excel, read_only=True, data_only=True)
 donnees = plateau_xl["Données"]
 
@@ -75,7 +75,7 @@ variant_methods = {
 text = """import openpyxl as xl
 from .Categorie import *
 
-excel = r"/run/media/damien/SanDisk 32Go USB/PJT/2 - Jumeau Numérique/SimCities Numérique Excel-Python/plateau_excelV3.xlsx"
+excel = r"utils/res/plateau_excelV3.xlsx"
 plateau_xl = xl.load_workbook(excel, read_only=True, data_only=True)
 donnees = plateau_xl["Données"]
 pollution = plateau_xl["Pollution"]
@@ -143,25 +143,25 @@ class Bloc:
         return self.data[key]
 
 
-class Vide(Bloc):
+class Vide(Bloc, Indispensable):
     data = {}
     def __init__(self):
         super().__init__("Vide", "Indispensable")
 
 
-class Riviere(Bloc):
+class Riviere(Bloc, Indispensable):
     data = {}
     def __init__(self):
         super().__init__("Rivière", "Indispensable")
 
 
-class Mairie(Bloc):
+class Mairie(Bloc, Indispensable):
     data = {}
     def __init__(self):
         super().__init__("Mairie", "Indispensable")
 
 
-class Parc(Bloc):
+class Parc(Bloc, Indispensable):
     data = {}
     def __init__(self):
         super().__init__("Parc", "Indispensable")
