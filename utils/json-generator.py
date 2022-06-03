@@ -36,7 +36,7 @@ categories = {
 }
 
 xl_coef_pollution = {
-    "Production d'énergie": ['F', 8],
+    "Production d'énergie": ['F', 5],
     "Habitation": ['H', 16],
     "Santé": ['J', 27],
     "Consommation": ['L', 32],
