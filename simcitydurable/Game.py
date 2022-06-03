@@ -16,7 +16,7 @@ def calc_ratio(v1,v2):
 
 class Game:
     def __init__(self):
-        self.board = Board(rand=True)
+        self.board = Board()
         self.note_dimmensionnement = self.calcul_note_dimensionnement()
         self.note_pollution = self.calcul_note_pollution()
 
@@ -67,17 +67,14 @@ class Game:
     def calcul_note_pollution_categories(self):
         notes = {}
         for c in CATEGORIES:
+            # [numérateur, dénominateur]
             notes[c] = [0, 0]
         for _, bloc in self.board:
             c = blocs[bloc]["catégorie"]
-            notes[c][0] += blocs[bloc]["émissions CO2"] * \
-                blocs[bloc]["coefficient pollution"]
+            notes[c][0] += blocs[bloc]["émissions CO2"] * blocs[bloc]["coefficient pollution"]
             notes[c][1] += blocs[bloc]["émissions CO2"]
         for c in CATEGORIES:
-            if notes[c][1] == 0:
-                notes[c] = 0
-            else:
-                notes[c] = notes[c][0] / notes[c][1]
+            notes[c] = calc_ratio(*notes[c])
         return notes
 
     def calcul_note_pollution(self):
@@ -118,4 +115,10 @@ class Game:
                 
         return sum(ratios.values())
 
-        
+    def update_notes(self):
+        self.note_dimmensionnement = self.calcul_note_dimensionnement()
+        self.note_pollution = self.calcul_note_pollution()
+
+    def get_notes(self):
+        self.update_notes()
+        return (self.note_dimmensionnement, self.note_pollution, 0)
