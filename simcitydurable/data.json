@@ -104,7 +104,7 @@
         "émissions CO2": 0
     },
     "CentraleNucleaire": {
-        "coefficient pollution": 2.5,
+        "coefficient pollution": 0,
         "production électricité": 6000000,
         "production nourriture": 0,
         "production eau": 0,
@@ -130,7 +130,7 @@
         "nom": "centrale nucléaire "
     },
     "ParcEolien2": {
-        "coefficient pollution": 0,
+        "coefficient pollution": 2.5,
         "production électricité": 176000,
         "production nourriture": 0,
         "production eau": 0,
@@ -208,7 +208,7 @@
         "nom": "parc éolien 8 [MW] (marine)"
     },
     "CentraleCharbon": {
-        "coefficient pollution": 2.5,
+        "coefficient pollution": 0,
         "production électricité": 3700000,
         "production nourriture": 0,
         "production eau": 0,
@@ -234,7 +234,7 @@
         "nom": "centrale charbon "
     },
     "PanneauxSolaire400": {
-        "coefficient pollution": 0,
+        "coefficient pollution": 2.5,
         "production électricité": 37,
         "production nourriture": 0,
         "production eau": 0,
@@ -286,7 +286,7 @@
         "nom": "panneaux solaires 1000 [m²]"
     },
     "Barrage": {
-        "coefficient pollution": 17.5,
+        "coefficient pollution": 2.5,
         "production électricité": 15000,
         "production nourriture": 0,
         "production eau": 0,
@@ -338,7 +338,7 @@
         "nom": "raffinerie "
     },
     "UniteMethanisation": {
-        "coefficient pollution": 0,
+        "coefficient pollution": 2.5,
         "production électricité": 20000,
         "production nourriture": 0,
         "production eau": 0,
